@@ -180,8 +180,7 @@
     </interceptors>
     <default-interceptor-ref name="supportStack"/>
     
-    <action name="remote" class="remoteServiceAction">
-    </action>
+    <action name="remote" class="remoteServiceAction"></action>
   </package>
   
   <package name="json" extends="json-default">
