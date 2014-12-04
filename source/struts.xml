@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+  <package name="struts2" extends="struts-default">
+    <interceptors>
+      <interceptor name="actionException" class="com.sinosoft.ms.interceptor.ActionExceptionInterceptor"></interceptor>
+      <interceptor name="login" class="loginInterceptor"></interceptor>
+      <interceptor name="task" class="taskInterceptor"></interceptor>
+      
+      <!-- The order in this stack must not be change!!!! -->
+      <interceptor-stack name="supportStack">
+        <interceptor-ref name="login" />
+        <interceptor-ref name="actionException" />
+        <interceptor-ref name="defaultStack" />
+      </interceptor-stack>
+    </interceptors>
+    <default-interceptor-ref name="supportStack"/>
+    
+    <global-results>
+      <result name="error">/WEB-INF/jsp/common/Error.jsp</result>
+      <result name="loginInput" type="chain">loginInput</result>
+    </global-results>
+
+    <action name="show" class="showAction">
+      <result name="menu">/WEB-INF/jsp/common/Menu.jsp</result>
+      <result name="title">/WEB-INF/jsp/common/Title.jsp</result>
+    </action>
+    
+    <action name="loginInput" class="loginAction" method="loginInput">
+      <result name="success">/WEB-INF/jsp/common/Login.jsp</result>
+    </action>
+    <action name="login" class="loginAction" method="login">
+      <result name="success">/WEB-INF/jsp/common/Index.jsp</result>
+      <result name="fail" type="chain">loginInput</result>
+    </action>
+
+    <action name="queryTask" class="taskAction" method="query">
+      <result name="success">/WEB-INF/jsp/task/TaskQueryResult.jsp</result>
+    </action>
+    <action name="addTaskInput" class="taskAction" method="addInput">
+      <result name="success">/WEB-INF/jsp/task/TaskAddInput.jsp</result>
+    </action>
+    <action name="addTask" class="taskAction" method="add">
+      <result name="success">/WEB-INF/jsp/success.jsp</result>
+      <interceptor-ref name="task" />
+      <interceptor-ref name="supportStack" />
+    </action>
+    <action name="modifyTask" class="taskAction" method="modify">
+      <result name="success" type="chain">queryTask</result>
+    </action>
+    <action name="removeTask" class="taskAction" method="remove">
+      <result name="success" type="chain">queryTask</result>
+      <interceptor-ref name="task" />
+      <interceptor-ref name="supportStack" />
+    </action>
+    <action name="stopTask" class="taskAction" method="stop">
+      <result name="success" type="chain">queryTask</result>
+    </action>
+    <action name="startTask" class="taskAction" method="start">
+      <result name="success" type="chain">queryTask</result>
+    </action>
+    <action name="modifyAssInput" class="taskAction" method="modifyAssInput">
+      <result name="success">/WEB-INF/jsp/task/TaskModifyInput.jsp</result>
+    </action>
+    
+    <action name="associationInput" class="taskAssociationAction" method="input">
+      <result name="mail">/WEB-INF/jsp/task/mail.jsp</result>
+      <result name="shortMsg">/WEB-INF/jsp/task/shortMsg.jsp</result>
+      <result name="reverse">/WEB-INF/jsp/task/reverse.jsp</result>
+      <interceptor-ref name="task" />
+      <interceptor-ref name="supportStack" />
+    </action>
+    <action name="modifyAssociationInput" class="taskAssociationAction" method="modifyInput">
+      <result name="mail">/WEB-INF/jsp/task/mail.jsp</result>
+      <result name="shortMsg">/WEB-INF/jsp/task/shortMsg.jsp</result>
+      <result name="reverse">/WEB-INF/jsp/task/reverse.jsp</result>
+      <interceptor-ref name="task" />
+      <interceptor-ref name="supportStack" />
+    </action>
+    <action name="modifyAssociation" class="taskAssociationAction" method="modify">
+      <result name="success">/WEB-INF/jsp/success.jsp</result>
+      <interceptor-ref name="task" />
+      <interceptor-ref name="supportStack" />
+    </action>
+    
+    <action name="addMailSenderInput" class="mailSenderAction" method="addInput">
+      <result name="success">/WEB-INF/jsp/mail/MailSenderAddInput.jsp</result>
+    </action>
+    <action name="addMailSender" class="mailSenderAction" method="add">
+      <result name="success">/WEB-INF/jsp/success.jsp</result>
+    </action>
+    <action name="queryMailSender" class="mailSenderAction" method="query">
+      <result name="success">/WEB-INF/jsp/mail/MailSenderQueryResult.jsp</result>
+    </action>
+    <action name="removeMailSender" class="mailSenderAction" method="remove">
+      <result name="success" type="chain">queryMailSender</result>
+    </action>
+    <action name="modifyMailSender" class="mailSenderAction" method="modify">
+      <result name="success" type="chain">queryMailSender</result>
+    </action>
+    <action name="validateMailSender" class="mailSenderAction" method="validate">
+      <result name="success" type="chain">queryMailSender</result>
+    </action>
+    
+    <action name="addMailInfoInput" class="mailInfoAction" method="addInput">
+      <result name="success">/WEB-INF/jsp/mail/MailInfoAddInput.jsp</result>
+    </action>
+    <action name="addMailInfo" class="mailInfoAction" method="add">
+      <result name="success">/WEB-INF/jsp/success.jsp</result>
+    </action>
+    <action name="queryMailInfo" class="mailInfoAction" method="query">
+      <result name="success">/WEB-INF/jsp/mail/MailInfoQueryResult.jsp</result>
+    </action>
+    <action name="removeMailInfo" class="mailInfoAction" method="remove">
+      <result name="success" type="chain">queryMailInfo</result>
+    </action>
+    <action name="modifyMailInfo" class="mailInfoAction" method="modify">
+      <result name="success" type="chain">queryMailInfo</result>
+    </action>
+    
+    <action name="addShortMsgSenderInput" class="shortMsgSenderAction" method="addInput">
+      <result name="success">/WEB-INF/jsp/shortMsg/ShortMsgSenderAddInput.jsp</result>
+    </action>
+    <action name="addShortMsgSender" class="shortMsgSenderAction" method="add">
+      <result name="success">/WEB-INF/jsp/success.jsp</result>
+    </action>
+    <action name="queryShortMsgSender" class="shortMsgSenderAction" method="query">
+      <result name="success">/WEB-INF/jsp/shortMsg/ShortMsgSenderQueryResult.jsp</result>
+    </action>
+    <action name="removeShortMsgSender" class="shortMsgSenderAction" method="remove">
+      <result name="success" type="chain">queryShortMsgSender</result>
+    </action>
+    <action name="modifyShortMsgSender" class="shortMsgSenderAction" method="modify">
+      <result name="success" type="chain">queryShortMsgSender</result>
+    </action>
+    
+    <action name="addShortMsgInfoInput" class="shortMsgInfoAction" method="addInput">
+      <result name="success">/WEB-INF/jsp/shortMsg/ShortMsgInfoAddInput.jsp</result>
+    </action>
+    <action name="addShortMsgInfo" class="shortMsgInfoAction" method="add">
+      <result name="success">/WEB-INF/jsp/success.jsp</result>
+    </action>
+    <action name="queryShortMsgInfo" class="shortMsgInfoAction" method="query">
+      <result name="success">/WEB-INF/jsp/shortMsg/ShortMsgInfoQueryResult.jsp</result>
+    </action>
+    <action name="removeShortMsgInfo" class="shortMsgInfoAction" method="remove">
+      <result name="success" type="chain">queryShortMsgInfo</result>
+    </action>
+    <action name="modifyShortMsgInfo" class="shortMsgInfoAction" method="modify">
+      <result name="success" type="chain">queryShortMsgInfo</result>
+    </action>
+    
+    <action name="addReverseInput" class="reverseAction" method="addInput">
+      <result name="success">/WEB-INF/jsp/reverse/ReverseAddInput.jsp</result>
+    </action>
+    <action name="addReverse" class="reverseAction" method="add">
+      <result name="success">/WEB-INF/jsp/success.jsp</result>
+    </action>
+    <action name="queryReverse" class="reverseAction" method="query">
+      <result name="success">/WEB-INF/jsp/reverse/ReverseQueryResult.jsp</result>
+    </action>
+    <action name="removeReverse" class="reverseAction" method="remove">
+      <result name="success" type="chain">queryReverse</result>
+    </action>
+    <action name="modifyReverse" class="reverseAction" method="modify">
+      <result name="success" type="chain">queryReverse</result>
+    </action>
+  </package>
+  
+  <package name="remoteservice">
+    <interceptors>
+      <interceptor name="remoteservice" class="remoteServiceInterceptor"></interceptor>
+      <!-- The order in this stack must not be change!!!! -->
+      <interceptor-stack name="supportStack">
+        <interceptor-ref name="remoteservice" />
+      </interceptor-stack>
+    </interceptors>
+    <default-interceptor-ref name="supportStack"/>
+    
+    <action name="remote" class="remoteServiceAction">
+    </action>
+  </package>
+  
+  <package name="json" extends="json-default">
+    <action name="selectKind" class="ajaxAction" method="selectKind">
+      <result type="json"/>
+    </action>
+    <action name="selectMailSender" class="ajaxAction" method="selectMailSender">
+      <result type="json"/>
+    </action>
+    <action name="checkMailInfoId" class="ajaxAction" method="checkMailInfoId">
+      <result type="json"/>
+    </action>
+    <action name="selectShortMsgSender" class="ajaxAction" method="selectShortMsgSender">
+      <result type="json"/>
+    </action>
+    <action name="checkShortMsgInfoId" class="ajaxAction" method="checkShortMsgInfoId">
+      <result type="json"/>
+    </action>
+    <action name="checkReverseId" class="ajaxAction" method="checkReverseId">
+      <result type="json"/>
+    </action>
+  </package>
+
+  <constant name="struts.locale" value="zh_CN"></constant>
+  <constant name="struts.i18n.encoding" value="UTF-8"></constant>
+</struts>
